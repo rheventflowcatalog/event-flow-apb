@@ -1,0 +1,43 @@
+- name: create manager deployment
+  k8s_extensions_v1beta1_deployment:
+   name: manager
+   namespace: '{{ namespace }}'
+   labels:
+     app: event-flow
+     service: manager
+   replicas: 1
+   spec_template_metadata_labels:
+     app: event-flow
+     service: manager
+   containers:
+   - env:
+     image: docker.io/streamzi/cef-manager:latest
+     name: manager
+     ports:
+     - container_port: 8080
+       protocol: TCP
+
+- name: create manager service
+  k8s_v1_service:
+   name: manager
+   namespace: '{{ namespace }}'
+   labels:
+     app: event-flow
+     service: manager
+   selector:
+     app: event-flow
+     service: manager
+   ports:
+     - name: web
+       port: 80
+       target_port: 8080
+
+- name: create manager route
+  openshift_v1_route:
+   name: manager
+   namespace: '{{ namespace }}'
+   labels:
+     app: event-flow
+     service: manager
+   to_name: manager
+   spec_port_target_port: web

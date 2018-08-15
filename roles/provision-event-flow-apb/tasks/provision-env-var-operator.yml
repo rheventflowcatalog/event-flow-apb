@@ -1,0 +1,21 @@
+- name: Login As Super User
+  command: "oc login -u {{ admin_user }} -p {{ admin_password }}"
+
+- name: create env-var operator deployment
+  k8s_extensions_v1beta1_deployment:
+   name: envvar-operator
+   namespace: '{{ namespace }}'
+   labels:
+     app: event-flow
+     service: envvar-operator
+   replicas: 1
+   spec_template_metadata_labels:
+     app: event-flow
+     service: envvar-operator
+   containers:
+   - env:
+     image: docker.io/streamzi/environment-variable-operator:latest
+     name: envvar-operator
+
+- name: Add cluster-admin policy for namespace
+  command: "oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:{{ namespace }}:default"

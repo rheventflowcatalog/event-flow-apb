@@ -1,0 +1,15 @@
+- name: create watcher deployment
+  k8s_extensions_v1beta1_deployment:
+   name: watcher
+   namespace: '{{ namespace }}'
+   labels:
+     app: event-flow
+     service: watcher
+   replicas: 1
+   spec_template_metadata_labels:
+     app: event-flow
+     service: watcher
+   containers:
+   - env:
+     image: docker.io/streamzi/cef-watcher:latest
+     name: watcher
