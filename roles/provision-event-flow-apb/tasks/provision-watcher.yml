@@ -12,4 +12,5 @@
    containers:
    - env:
      image: docker.io/streamzi/cef-watcher:latest
+     imagePullPolicy: IfNotPresent
      name: watcher
