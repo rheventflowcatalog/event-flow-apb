@@ -12,6 +12,7 @@
    containers:
    - env:
      image: docker.io/streamzi/cef-manager:latest
+     imagePullPolicy: IfNotPresent
      name: manager
      ports:
      - container_port: 8080
