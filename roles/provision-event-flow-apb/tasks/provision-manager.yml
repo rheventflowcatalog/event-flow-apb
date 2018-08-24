@@ -42,3 +42,6 @@
      service: manager
    to_name: manager
    spec_port_target_port: web
+
+- name: Add CRD for Processors
+  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/processor-crd.yml"
