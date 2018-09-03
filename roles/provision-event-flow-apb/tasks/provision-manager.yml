@@ -43,8 +43,20 @@
    to_name: manager
    spec_port_target_port: web
 
+- name: "Check if the processors.streamzi.io CRD is present"
+  shell: kubectl get proc
+  ignore_errors: yes
+  register: processors_result
+
 - name: Add CRD for Processors
+  when: processors_result.rc != 0
   command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/processor-crd.yml"
 
+- name: "Check if the flows.streamzi.io CRD is present"
+  shell: kubectl get flows
+  ignore_errors: yes
+  register: flows_result
+
 - name: Add CRD for Flows
+  when: flows_result.rc != 0
   command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/flow-crd.yml"
