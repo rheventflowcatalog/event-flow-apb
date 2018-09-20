@@ -60,3 +60,12 @@
 - name: Add CRD for Flows
   when: flows_result.rc != 0
   command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/flow-crd.yml"
+
+- name: "Check if the clouds.streamzi.io CRD is present"
+  shell: kubectl get clouds
+  ignore_errors: yes
+  register: clouds_result
+
+- name: Add CRD for Clouds
+  when: flows_result.rc != 0
+  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/cloud-crd.yml"
