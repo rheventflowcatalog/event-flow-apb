@@ -1,16 +1,16 @@
-- name: create watcher deployment
+- name: create EventFlow Operator deployment
   k8s_extensions_v1beta1_deployment:
-   name: watcher
+   name: operator
    namespace: '{{ namespace }}'
    labels:
-     app: event-flow
-     service: watcher
+     app: eventflow
+     service: operator
    replicas: 1
    spec_template_metadata_labels:
-     app: event-flow
-     service: watcher
+     app: eventflow
+     service: operator
    containers:
    - env:
-     image: docker.io/streamzi/cef-watcher:latest
+     image: docker.io/streamzi/eventflow-operator:latest
      imagePullPolicy: IfNotPresent
-     name: watcher
+     name: operator

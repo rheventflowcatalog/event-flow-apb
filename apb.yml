@@ -7,6 +7,10 @@ metadata:
   displayName: CloudEvent Flow
   console.openshift.io/iconClass: fa fa-paper-plane
   providerDisplayName: "Red Hat, Inc."
+  dependencies:
+    - "docker.io/streamzi/environment-variable-operator:latest"
+    - "docker.io/streamzi/eventflow-operator:latest"
+    - "docker.io/streamzi/eventflow-ui:latest"
 plans:
   - name: default
     description: This default plan deploys event-flow-apb

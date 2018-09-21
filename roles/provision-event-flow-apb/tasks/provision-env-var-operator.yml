@@ -6,11 +6,11 @@
    name: flow-envvar-operator
    namespace: '{{ namespace }}'
    labels:
-     app: event-flow
+     app: eventflow
      service: flow-envvar-operator
    replicas: 1
    spec_template_metadata_labels:
-     app: event-flow
+     app: eventflow
      service: flow-envvar-operator
    containers:
    - env:

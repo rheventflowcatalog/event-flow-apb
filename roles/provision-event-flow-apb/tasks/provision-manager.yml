@@ -1,46 +1,46 @@
-- name: create manager deployment
+- name: create EventFlow UI deployment
   k8s_extensions_v1beta1_deployment:
-   name: manager
+   name: ui
    namespace: '{{ namespace }}'
    labels:
-     app: event-flow
-     service: manager
+     app: eventflow
+     service: ui
    replicas: 1
    spec_template_metadata_labels:
-     app: event-flow
-     service: manager
+     app: eventflow
+     service: ui
    containers:
    - env:
-     image: docker.io/streamzi/cef-manager:latest
+     image: docker.io/streamzi/eventflow-ui:latest
      imagePullPolicy: IfNotPresent
-     name: manager
+     name: ui
      ports:
      - container_port: 8080
        protocol: TCP
 
-- name: create manager service
+- name: create EventFlow UI service
   k8s_v1_service:
-   name: manager
+   name: ui
    namespace: '{{ namespace }}'
    labels:
-     app: event-flow
-     service: manager
+     app: eventflow
+     service: ui
    selector:
-     app: event-flow
-     service: manager
+     app: eventflow
+     service: ui
    ports:
      - name: web
        port: 80
        target_port: 8080
 
-- name: create manager route
+- name: create EventFlow UI route
   openshift_v1_route:
-   name: manager
+   name: ui
    namespace: '{{ namespace }}'
    labels:
-     app: event-flow
-     service: manager
-   to_name: manager
+     app: eventflow
+     service: ui
+   to_name: ui
    spec_port_target_port: web
 
 - name: "Check if the processors.streamzi.io CRD is present"
@@ -50,7 +50,7 @@
 
 - name: Add CRD for Processors
   when: processors_result.rc != 0
-  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/processor-crd.yml"
+  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudeventflow/master/ui/src/main/resources/processor-crd.yml"
 
 - name: "Check if the flows.streamzi.io CRD is present"
   shell: kubectl get flows
@@ -59,7 +59,7 @@
 
 - name: Add CRD for Flows
   when: flows_result.rc != 0
-  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/flow-crd.yml"
+  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudeventflow/master/ui/src/main/resources/flow-crd.yml"
 
 - name: "Check if the clouds.streamzi.io CRD is present"
   shell: kubectl get clouds
@@ -68,4 +68,4 @@
 
 - name: Add CRD for Clouds
   when: flows_result.rc != 0
-  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudevent-flow/master/manager/src/main/resources/cloud-crd.yml"
+  command: "kubectl create -f https://raw.githubusercontent.com/project-streamzi/cloudeventflow/master/ui/src/main/resources/cloud-crd.yml"
